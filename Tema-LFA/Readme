@@ -1,0 +1,73 @@
+Jorascu Marian Vladut 335CC
+
+					README TEMA LFA
+						VARIANTA C
+
+Compilare : make
+Rulare : make run fisier=Nume_Fisier_Test, unde Nume_Fisier_Test este
+numele fisierului in care este declarat obiectul
+			
+Am presupus ca nu vor exista mai multe de 100 de obiecte intr-un fisier
+si numele lor sa fie mai lungi de 500 de caractere.
+			
+In cadrul temei am folosit FLEX si C. Pentru procesarea informatiei
+am folosit doar FLEX . Am folosit stari de tip "%x", singura stare
+care este de tip %s fiind INITIAL.
+
+In zona corespunzatoare mi-am definit toate expresiile regulate ce
+imi sunt necesare pe tot parcursul programului(descrierile acestora
+se afla in comentarii din fisierul sursa).(Am folosit cam multe expresii
+regula auxiliare , dar asta deoarece in ultimele ore am modificat
+codul , pentru a accepta si taburi intre numere, si am vrut sa
+fiu cat mai sigur ca nu voi strica programul :( )
+
+Singurele expresii care sunt "prefixate" de INITIAL sunt cele care
+descriu delimitatorii ce pot aparea intre linii ( am presupu ca ar 
+putea aparea si la inceputul fisierului) sii expresia regulata
+formata dintr-o singura litera mica.Astfel, in aceasta stare decid
+daca obiectul descris are nume, dupa care trec in starea DECIZIE.
+De asemenea, inainte de a trece in stare apelez yyless(0) intrucat
+daca litera ar fi fost 'v',existau mai multe posibilitati .
+
+In starea DECIZIE , singurele expresii care sunt in aceasta stare
+sunt toate expresiile regulate de o litera , doua sau delimitatorii
+care pot aparea intre linii . 
+Litera/Litere cu ajutorul carora stim ce fel de componenta se afla 
+pe linia curenta.In functie de cum sunt definite expresiile regulate
+se apeleaza sau nu yyless pt prima litera/primele 2. (Singurele 
+cazuri cand nu se apeleaza este atunci cand avem o linie ce
+prezinta numele unui obiect , sau a unui obiect component). 
+
+Starile VARF,NORMALA si TEXTURA au ca scop numararea acestora. Expresiile 
+regulate care sunt prefixate de starea corespunzatoare, fac MATCH
+pe toata linia (incepand de la litera v) pana la sfaristul ei ( fara
+\n). Dupa care se trece in starea SFARSITLINIE. Singura ER care 
+poate face match in starea aceasta este "\n". Am ales sa fac o stare
+separata si sa nu adaug la restul delimitatorilor deoarece in enuntul
+temei se precieaza faptul ca orice element(varf, obiect component etc) se
+afla pe o linie separata. Din starea aceasta se trece in starea 
+DECIZIE unde se poate face match pe o serie de delimitatori sau
+pe un nou "inceput de componenta".
+
+In starea FATA avem mai multe tipuri de expresii regulate , care de
+asemenea fac match pe toata linia de la f pana la \n(fara acesta).
+Avem expresii regulate FataSimpla in care sunt prezenti doar indicii vertexilor
+, avem FataT unde sunt prezente si coordonatele de texturare, FataN 
+unde sunt specificate normalele si , FataTN (toate cele 3 ). In aceste
+stari se decide daca fata apartine obiectului principal sau unui obiect
+component pe baza flagului "sw" ( daca este 0 atunci este al obiectului 
+principal , altfel este al unui obiect component). Apoi se trece in starea
+SFARSITLINIE.
+
+
+In starea OBIECTPROPRIUZIS se va face match pentru inceput pe delimitatori ,
+iar apoi pe numele obiectului. Numele obiectelor sunt salvate in array-uri
+multidimensiunale ( ce au fost declarate in prima zona ). Pentru obiectele 
+componenta se procedeaza in acelasi mod ( desigur difera starea )
+
+
+Dupa ce se termina de executat partea de flex , pe baza variabilelor declarate
+in prima zona , se afiseaza informatiile despre obiectul/obictele noastra. 
+In aceasta zona nu prea am pus comntarii deoarece sunt doar afisari 
+si se poate deduce din numele variabilelor sau din ce se afiseaza la consola
+ceea ce se intampla.
